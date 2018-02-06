@@ -1,0 +1,25 @@
+<!Doctype html>
+<html>
+      <head>
+        <meta charset="utf-8">
+      	<title>Weconnect</title>
+      	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
+      </head>
+      <body>
+      	<div class="container">
+                <h1>WeConnect</h1>
+                <h3>Connecting people to your business</h3>
+      	    <img src="{{url_for('static',filename='user.jpeg')}}" class="user">
+      	    <h2>Register Your Business</h2>
+      	    <form>
+      	        <p>Business Name:</p>
+      	        <input type="text" name="business_name" placeholder="Business name" required>
+                <p>Business category:</p>
+                <input type="text" name="category" placeholder="Business category" required>
+      	    	  <p>Location:</p>
+      	    	  <input type="Password" name="location" placeholder="Location" required></br></br>
+                <input type="submit" name="" value="Register"></br></br>
+      	    </form>      		
+      	</div>
+      </body>
+</html>
