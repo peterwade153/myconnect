@@ -1,5 +1,5 @@
 body {
-	background-image: url(./imgs/bckg.jpg);
+	background-image: url(../static/bckg.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
 }
@@ -15,6 +15,34 @@ body {
 	padding-bottom: 10px;
 	border-radius: 5%;
 
+}
+.businesscontainer{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 20px;
+	padding-left: 15px;
+	background: rgba(0,0,0, .7);
+	width: 93%;
+}
+
+ .businesscontainer .navbar ul{
+ 	list-style: none;
+ 	display: inline-block;
+ }
+
+.businesscontainer .navbar ul li{
+ 	border: 3px solid #fff;
+ 	border-radius: 3px;
+ 	background-color: #000;
+ 	display: inline;
+ 	padding-left: 20px;
+ 	padding-right: 20px;
+ }
+.businesscontainer .navbar ul li a{
+ 	text-decoration: none;
+ 	color: #fff;
+ 	text-transform: uppercase;
 }
 .user{
 	width: 100px;
@@ -44,7 +72,7 @@ h3,h2,h1{
 	font-family: Arial, Helvetica, sans-serif;
 
 }
-input[type=email],input[type=text],input[type=password]{
+.conatiner input[type=text],input[type=password],input[type=email]{
 	width: 90%;
 	border: none;
 	border-bottom:1px solid #fff;
@@ -54,6 +82,30 @@ input[type=email],input[type=text],input[type=password]{
 	color: #fff;
 	font-size: 18px;
 }
+
+.businesscontainer .businessSection input[type=text]{
+	width: 15%;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	font-size: 18px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.businesscontainer .businessSection label{
+	font-family: Arial, Helvetica, sans-serif;
+
+}
+input[type=email]{
+	width: 90%;
+	border: none;
+	border-bottom:1px solid #fff;
+	background:transparent;
+	outline: none;
+	height:15px;
+	color: #fff;
+	font-size: 18px;
+}
+
 input[type=submit]{
 	width: 40%;
 	margin-left: 26%;

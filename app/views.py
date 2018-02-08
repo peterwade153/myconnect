@@ -1,16 +1,17 @@
 from app import app
-from app.models import db, User, Business, Reviews
+from app.models import db, User, Business, Review
 from werkzeug.security import check_password_hash
 from functools import wraps
 from flask import render_template, request, redirect, url_for, session
 
-db.app = app
-db.init_app(app)# connecting sqlalchemy object to the app
+
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost/weconnect"
 app.config['SECRET_KEY'] = 'not_secret_any_more'
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost/weconnect"
 
+db.app = app
+db.init_app(app)# connecting sqlalchemy object to the app
 
 def login_required(f):
 	@wraps(f)
@@ -20,6 +21,7 @@ def login_required(f):
 		else:
 			flash("you need to login first")
 			return redirect(url_for('login'))
+	return wraps
 
 
 @app.route('/', methods=['POST','GET'])

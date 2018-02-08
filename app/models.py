@@ -2,11 +2,14 @@ from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
 import app
 
+
+
 #instantiate the db object with sqlalchemy
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 class User(db.Model):
 	"""user table"""
+	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key = True)
 	username = db.Column(db.String(100), unique = True)
 	email = db.Column(db.String(100), unique = True)
@@ -34,12 +37,13 @@ class User(db.Model):
 
 class Business(db.Model):
 	"""business table"""
+	__tablename__ = 'businesses'
 	id = db.Column(db.Integer, primary_key = True)
 	business_name = db.Column(db.String(100))
 	business_category = db.Column(db.String(200))
 	business_location = db.Column(db.String(100))
-	user_id = db.Column(db.Integer, db.Foreign_key(User.id))
-	user = db.relationship('User', backref = 'business' lazy = 'dynamic')
+	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+	user = db.relationship('User', backref = 'businesses', lazy = 'dynamic')
 
 	def __init__(self, business_name, business_category, business_location, user_id):
 		self.business_name = business_name
@@ -55,10 +59,11 @@ class Business(db.Model):
 
 class Review(db.Model):
 	"""business reviews"""
+	__tablename__ = 'reviews'
 	id = db.Column(db.Integer, primary_key = True)
 	review = db.Column(db.String(200))
-	business_id = db.Column(db.Integer, db.Foreign_key(Business.id))
-	business = db.relationship('Business', backref = 'reviews' lazy = 'dynamic')
+	business_id = db.Column(db.Integer, db.ForeignKey('businesses.id'))
+	business = db.relationship('Business', backref = 'reviews', lazy = 'dynamic')
 
 	def __init__(self, review, business_id):
 		self.review = review
