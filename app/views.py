@@ -17,7 +17,7 @@ def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
 		if 'logged_in' in session and 'Myuser_id':
-			return f(Myuser_id, *args, **kwargs)
+			return f(*args, **kwargs)
 		else:
 			flash("you need to login first")
 			return redirect(url_for('login'))
@@ -78,18 +78,23 @@ def login():
 			return redirect(url_for('viewbusiness'))
 
 		error = "invalid username or password!"
-
-	return render_template('login.html')
+	return render_template('login.html',error = error)
 
 
 @app.route('/business')
 @login_required
-def viewbusiness(Myuser_id):
+def viewbusiness():
 	""" routes enables user to see registered businesses """
-
-	Current_user={}
-	Current_user[id] = Myuser_id
 
 	All_businesses = Business.query.all()
 	return render_template('business.html', businesses = All_businesses)
 
+@app.route('/addbusiness')
+@login_required
+def addbusiness():
+	return render_template('addBusiness.html')
+
+@app.route('/reviews')
+@login_required
+def reviews():
+	return render_template('reviews.html')
