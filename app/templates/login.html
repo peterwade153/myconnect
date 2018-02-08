@@ -18,6 +18,9 @@
       	    	  <input type="Password" name="password" placeholder="Enter password" required></br></br>
                 <input type="submit" name="" value="LOGIN">
       	    </form>
+      {% if error %}
+        <strong style="color:#fff;">Error:</strong>{{error}}
+      {% endif %}
             <h3>Not registered? <a href="/">REGISTER</a></h3>      		
       	</div>
       </body>
