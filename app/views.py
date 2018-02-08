@@ -16,13 +16,12 @@ db.init_app(app)# connecting sqlalchemy object to the app
 def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
-			Myuser_id
+		if 'logged_in' in session and 'Myuser_id':
 			return f(Myuser_id, *args, **kwargs)
 		else:
 			flash("you need to login first")
 			return redirect(url_for('login'))
-	return wraps
+	return wrap
 
 
 @app.route('/', methods=['POST','GET'])
@@ -76,7 +75,7 @@ def login():
 		if check_password_hash(Myuser.password, Password):
 			session['logged_in'] = True
 			Myuser_id = Myuser.id
-			return redirect(url_for('business'))
+			return redirect(url_for('viewbusiness'))
 
 		error = "invalid username or password!"
 
