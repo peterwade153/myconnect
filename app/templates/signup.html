@@ -12,6 +12,12 @@
       	    <img src="{{url_for('static',filename='user.jpeg')}}" class="user">
       	    <h2>Register Here</h2>
 
+            {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            {{ message }}
+            {% endfor%}
+            {% endwith %}
+
       	    <form method ="POST", action="/">
       	        <p>Username:</p>
       	        <input type="text" name="username" placeholder="Enter username" required>
@@ -19,9 +25,12 @@
       	    	  <input type="email" name="email" placeholder="Enter Email" required>
       	    	  <p>Password:</p>
       	    	  <input type="password" name="password" placeholder="Enter password" required></br></br>
-                
+
                 <input type="submit" name="" value="SIGN UP">
       	    </form>
+      {% if error %}
+        <strong style="color:#fff;">Error:</strong>{{error}}
+      {% endif %}
             <h3>Already registered? <a href="/login">LOGIN</a></h3>      		
       	</div>
       </body>

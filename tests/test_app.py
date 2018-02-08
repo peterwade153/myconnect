@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 import unittest
 import app
+import os
 import tempfile
 
 
@@ -28,7 +29,7 @@ class AppTestCase(unittest.TestCase):
 		""" tests a user is registered on the app"""
 
 		result = self.app.post('/', data = dict(username = 'test', email = 'test@test.com', password = '12345'))
-		self.assertEqual(200,result.status)
+		self.assertEqual('200 OK',result.status)
 
 
 if __name__ == '__main__':

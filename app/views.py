@@ -17,7 +17,8 @@ def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
 		if 'logged_in' in session:
-			return f(*args, **kwargs)
+			Myuser_id
+			return f(Myuser_id, *args, **kwargs)
 		else:
 			flash("you need to login first")
 			return redirect(url_for('login'))
@@ -38,6 +39,7 @@ def signup():
 		New_user = User.query.filter_by(username = Username).first()
 		if New_user:
 			error = "User already exists!"
+			return render_template('signup.html', error = error)
 
 		Myuser = User(username = Username, email = Email, password = Password)
 		db.session.add(Myuser)
@@ -47,6 +49,15 @@ def signup():
 		return redirect(url_for('login'))
 
 	return render_template('signup.html', error = error)
+
+@app.route('/logout')
+def logout():
+	""" routes logs out the user"""
+
+	session.pop('logged_in', None)
+	flash('you have logged out!')
+	return redirect(url_for('login'))
+
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -65,25 +76,18 @@ def login():
 		if check_password_hash(Myuser.password, Password):
 			session['logged_in'] = True
 			Myuser_id = Myuser.id
-			return redirect(url_for('viewbusiness', Myuser_id))
+			return redirect(url_for('business'))
 
 		error = "invalid username or password!"
 
 	return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-	""" routes logs out the user"""
-
-	session.pop('logged_in', None)
-	flash('you have logged out!')
-	return redirect(url_for('login'))
 
 
 @app.route('/business')
 @login_required
 def viewbusiness(Myuser_id):
 	""" routes enables user to see registered businesses """
+
 	Current_user={}
 	Current_user[id] = Myuser_id
 
