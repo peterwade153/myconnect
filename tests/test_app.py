@@ -2,27 +2,33 @@ import sys
 sys.path.append('..')
 import unittest
 import app
-from app.models import db
+import tempfile
+
 
 class AppTestCase(unittest.TestCase):
 	"""represents the app testcase, will be called before every test"""
 
 	def setUp(self):
 		''' creates a new test client and initilise a new database'''
-		self.app = app.test_client()
-		app.testing = True
-		db.create_all()
 
-		self.user = User(username = 'test', email = 'test@test.com', password = '12345')
-		db.session.add(user)
-		db.session.commit()
+		app.testing = True
+		self.db_fd, app.app.config['DATABASE'] = tempfile.mkstemp()
+		self.app = app.app.test_client()
+		#db.create_all()
 
 	def tearDown(self):
 		''' will be called after every test'''
 
-		db.session.remove()
-		db.drop_all()
+		os.close(self.db_fd)
+		os.unlink(app.app.config['DATABASE'])
 
+
+
+	def test_user_registration(self):
+		""" tests a user is registered on the app"""
+
+		result = self.app.post('/', data = dict(username = 'test', email = 'test@test.com', password = '12345'))
+		self.assertEqual(200,result.status)
 
 
 if __name__ == '__main__':

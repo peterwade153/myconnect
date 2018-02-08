@@ -2,7 +2,7 @@ from app import app
 from app.models import db, User, Business, Review
 from werkzeug.security import check_password_hash
 from functools import wraps
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session, flash
 
 
 
@@ -34,23 +34,19 @@ def signup():
 		Email = request.form['email']
 		Password = request.form['password']
 
-		if not Username and not Email and not Password:
-			error = "please all fields are required!"
-			return redirect(url_for('signup'))
-
 		#check if user doesnt exist!
 		New_user = User.query.filter_by(username = Username).first()
 		if New_user:
 			error = "User already exists!"
 
-		Myuser=User(username = Username, email = Email, password = Password)
+		Myuser = User(username = Username, email = Email, password = Password)
 		db.session.add(Myuser)
 		db.session.commit()
 
-		flash ('New user registered!')
+		flash('New user registered!')
 		return redirect(url_for('login'))
 
-	return render_template('signup.html', error=error)
+	return render_template('signup.html', error = error)
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -61,7 +57,7 @@ def login():
 		Username = request.form['username']
 		Password = request.form['password']
 
-		Myuser = User.query.filter_by(username = Username, password = Password).first()
+		Myuser = User.query.filter_by(username = Username).first()
 
 		if not Myuser:
 			error = "username or password is incorrect, check and try again!"

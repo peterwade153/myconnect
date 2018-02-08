@@ -43,7 +43,7 @@ class Business(db.Model):
 	business_category = db.Column(db.String(200))
 	business_location = db.Column(db.String(100))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-	user = db.relationship('User', backref = 'businesses', lazy = 'dynamic')
+	user = db.relationship('User', backref = db.backref('businesses', lazy = 'dynamic'))
 
 	def __init__(self, business_name, business_category, business_location, user_id):
 		self.business_name = business_name
@@ -63,7 +63,7 @@ class Review(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	review = db.Column(db.String(200))
 	business_id = db.Column(db.Integer, db.ForeignKey('businesses.id'))
-	business = db.relationship('Business', backref = 'reviews', lazy = 'dynamic')
+	business = db.relationship('Business', backref = db.backref('reviews', lazy = 'dynamic'))
 
 	def __init__(self, review, business_id):
 		self.review = review
