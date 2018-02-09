@@ -1,9 +1,9 @@
 import sys
 sys.path.append('..')
 import unittest
-from app import app
 import os
 import tempfile
+from app import app
 
 
 class AppTestCase(unittest.TestCase):
@@ -13,15 +13,15 @@ class AppTestCase(unittest.TestCase):
 		''' creates a new test client and initilise a new database'''
 
 		app.testing = True
-		self.db_fd, app.app.config['DATABASE'] = tempfile.mkstemp()
-		self.app = app.app.test_client()
+		self.db_fd, app.config['DATABASE'] = tempfile.mkstemp()
+		self.app = app.test_client()
 		#db.create_all()
 
 	def tearDown(self):
 		''' will be called after every test'''
 
 		os.close(self.db_fd)
-		os.unlink(app.app.config['DATABASE'])
+		os.unlink(app.config['DATABASE'])
 
 
 
