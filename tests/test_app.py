@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 import unittest
-import app
+from app import app
 import os
 import tempfile
 
