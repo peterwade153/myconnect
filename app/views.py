@@ -2,6 +2,7 @@
 from functools import wraps
 from werkzeug.security import check_password_hash
 from flask import render_template, request, redirect, url_for, session, flash
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from app import app
 from app.models import db, User, Business, Review
 
@@ -14,15 +15,23 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost/w
 db.app = app
 db.init_app(app)# connecting sqlalchemy object to the app
 
-def login_required(f):
-	@wraps(f)
-	def wrap(*args, **kwargs):
-		if 'logged_in' in session and 'Myuser_id':
-			return f(*args, **kwargs)
-		else:
-			flash("you need to login first")
-			return redirect(url_for('login'))
-	return wrap
+#creating an instance of login manager and initializing it with our app instance
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(id):
+	""" loads user from an id from the database"""
+	return User.query.get(int(id))
+
+login_manager.login_view = 'login'
+
+
+@app.before_request
+def before_request():
+	""" runs before view function each time a request is recieved. will store logged in user"""
+
+	g.user = current_user
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -45,18 +54,10 @@ def signup():
 		db.session.add(myuser)
 		db.session.commit()
 
-		flash('New user registered!')
+		flash('User registered successfully!')
 		return redirect(url_for('login'))
-
 	return render_template('signup.html',error = error)
 
-@app.route('/logout')
-def logout():
-	""" routes logs out the user"""
-
-	session.pop('logged_in', None)
-	flash('you have logged out!')
-	return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -68,18 +69,28 @@ def login():
 		username = request.form['username']
 		password = request.form['password']
 
-		myuser = User.query.filter_by(username = username).first()
+		myuser = User.query.filter_by(username = username, password = password).first()
 
 		if not myuser:
 			error = "username or password is incorrect, check and try again!"
         #check if it the right password passed
 		if check_password_hash(myuser.password, password):
-			session['logged_in'] = True
-			myuser_id = myuser.id
+
+			login_user(myuser)
+			flash('LOgged in successfully!')
 			return redirect(url_for('viewbusiness'))
 
 		error = "invalid username or password!"
 	return render_template('login.html',error = error)
+
+
+@app.route('/logout')
+def logout():
+	""" routes logs out the user"""
+
+	logout_user()
+	return redirect(url_for('login'))
+
 
 
 @app.route('/business')

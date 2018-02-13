@@ -20,15 +20,18 @@ class User(db.Model):
 		self.email = email
 		self.password = generate_password_hash(password, method='sha256')
 
-	def save(self):
-		"""saves new user and editted one"""
-		db.session.add(self)
-		db.session.commit()
+	def is_authenticated(self):
+		return True
 
-	def delete(self):
-		""" deletes a user"""
-		db.session.delete(self)
-		db,session.commit()
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return unicode(self.id)
+
 
 	def __repr__(self):
 		""" represents object instance of model whenever its queried"""
