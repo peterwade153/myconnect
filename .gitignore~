@@ -1,0 +1,7 @@
+#__pycache__/
+
+
+
+find . | \
+  grep -E "(__pycache__|\.pyc$)" | \
+xargs rm -rf
