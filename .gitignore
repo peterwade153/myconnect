@@ -1,2 +1,8 @@
 __pycache__/
-app/__pycache__/
+app/__pycache__/__init__.cpython-34.pyc
+app/__pycache__/models.cpython-34.pyc
+app/__pycache__/views.cpython-34.pyc
+
+
+
+
