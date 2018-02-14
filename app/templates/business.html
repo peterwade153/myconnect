@@ -17,18 +17,20 @@
               </ul>
             </div>
             <div class="businessSection">
-                 <h3> Business ID: </h3>
+            <form>
+                 <input type="hidden" name="id" value="{{business.id}}">
                  <label>Name:</label>
-                 <input type="text" name="" value="">
+                 <input type="text" name="business_name" id="nameInput"  value="{{ }}">
                  <label>Category:</label>
-                 <input type="text" name="" value="">
+                 <input type="text" name="Category" id="categoryInput" value="{{ }}">
                  <label>Location:</label>
-                 <input type="text" name="" value="">
-                 <label>Owner_ID:</label>
-                 <input type="text" name="" value="">
+                 <input type="text" name="location" id="locationInput" value="{{ }}">
+                 <input type="hidden" name="user_id" value="{{business.user_id}}">
+  
                  <button class="update">Update</button>
                  <button class="update">Review</button>
                  <button class="update">Delete</button>
+              </form>
             </div>
       	</div>
       </body>
