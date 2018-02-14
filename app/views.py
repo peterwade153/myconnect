@@ -68,6 +68,7 @@ def login():
 
 		if not user:
 			error = "username or password is incorrect, check and try again!"
+			return render_template('login.html', error = error)
         #check if it the right password passed
 		if check_password_hash(user.password, password):
 
@@ -99,17 +100,18 @@ def viewbusiness():
 	return render_template('business.html',businesses = all_businesses, current_user = current_user)
 
 
-@app.route('/addbusiness', methods = ['POST', 'GET '])
+@app.route('/addbusiness', methods = ['POST','GET'])
 @login_required
 def addbusiness():
 	""" route enables user add a business"""
 
+	error = None
 	if request.method == 'POST':
 		name = request.form['business_name']
 		category = request.form['category']
 		location = request.form['location']
 
-		business = Business.query.filter_by(business_name = name, business_category = category).first()
+		business = Business.query.filter_by(business_name = name, business_category = category, business_location = location).first()
 		if business:
 			error = 'Business already exists!'
 			return render_template('addBusiness.html', error = error)
@@ -119,7 +121,8 @@ def addbusiness():
 		db.session.commit()
 
 		flash('new business added!')
-	return render_template('addBusiness.html')
+		return redirect(url_for('viewbusiness'))
+	return render_template('addBusiness.html', error = error)
 
 
 @app.route('/updatebusiness', methods = ['POST'])
