@@ -20,18 +20,13 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 @login_manager.user_loader
-def load_user(id):
+def load_user(user_id):
 	""" loads user from an id from the database"""
-	return User.query.get(int(id))
+	return User.query.get(int(user_id))
 
 login_manager.login_view = 'login'
 
 
-@app.before_request
-def before_request():
-	""" runs before view function each time a request is recieved. will store logged in user"""
-
-	g.user = current_user.id
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -69,14 +64,14 @@ def login():
 		username = request.form['username']
 		password = request.form['password']
 
-		myuser = User.query.filter_by(username = username, password = password).first()
+		user = User.query.filter_by(username = username).first()
 
-		if not myuser:
+		if not user:
 			error = "username or password is incorrect, check and try again!"
         #check if it the right password passed
-		if check_password_hash(myuser.password, password):
+		if check_password_hash(user.password, password):
 
-			login_user(myuser)
+			login_user(user)
 			flash('Logged in successfully!')
 			return redirect(url_for('viewbusiness'))
 
@@ -101,8 +96,8 @@ def viewbusiness():
 	""" routes enables user to see registered businesses """
 
 	all_businesses = Business.query.all()
-	return render_template('business.html',businesses = all_businesses)
-	
+	return render_template('business.html',businesses = all_businesses, current_user = current_user)
+
 
 @app.route('/addbusiness', methods = ['POST', 'GET '])
 @login_required
