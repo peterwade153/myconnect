@@ -31,7 +31,7 @@ login_manager.login_view = 'login'
 def before_request():
 	""" runs before view function each time a request is recieved. will store logged in user"""
 
-	g.user = current_user
+	g.user = current_user.id
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -77,7 +77,7 @@ def login():
 		if check_password_hash(myuser.password, password):
 
 			login_user(myuser)
-			flash('LOgged in successfully!')
+			flash('Logged in successfully!')
 			return redirect(url_for('viewbusiness'))
 
 		error = "invalid username or password!"
@@ -85,10 +85,12 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
 	""" routes logs out the user"""
 
 	logout_user()
+	flash('logged out successfully!')
 	return redirect(url_for('login'))
 
 
@@ -100,13 +102,62 @@ def viewbusiness():
 
 	all_businesses = Business.query.all()
 	return render_template('business.html',businesses = all_businesses)
+	
 
-@app.route('/addbusiness')
+@app.route('/addbusiness', methods = ['POST', 'GET '])
 @login_required
 def addbusiness():
 	""" route enables user add a business"""
 
+	if request.method == 'POST':
+		name = request.form['business_name']
+		category = request.form['category']
+		location = request.form['location']
+
+		business = Business.query.filter_by(business_name = name, business_category = category).first()
+		if business:
+			error = 'Business already exists!'
+			return render_template('addBusiness.html', error = error)
+
+		newbusiness = Business(business_name = name, business_category = category, business_location = location, user_id = current_user.id)
+		db.session.add(newbusiness)
+		db.session.commit()
+
+		flash('new business added!')
 	return render_template('addBusiness.html')
+
+
+@app.route('/updatebusiness', methods = ['POST'])
+@login_required
+def update_business():
+	"""route enables authenticated user update a business they created """
+
+	business = Business.query.filter_by(id = request.form['id']).first()
+	business.business_name = request.form['business_name']
+	business.business_category = request.form['category']
+	business.business_location = request.form['location']
+	business.user_id = request.form['user_id']
+
+	if business.user_id == current_user.id:
+		db.session.commit()
+	error = 'you dont have permission to edit!'
+
+	return render_template('business.html', error = error)
+
+@app.route('/deletebusiness')
+@login_required
+def delete_business():
+	'''routes allows a user that created a business to delete it '''
+
+	business = Business.query.filter_by(id = request.form['id']).first()
+	business.user_id = request.form['user_id']
+
+	if business.user_id == current_user.id:
+		db.session.delete(business)
+
+	error = 'you dont have permission to delete!'
+	return render_template('business.html', error = error)
+
 
 @app.route('/reviews')
 @login_required
