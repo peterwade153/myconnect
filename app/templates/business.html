@@ -4,6 +4,7 @@
         <meta charset="utf-8">
       	<title>Weconnect</title>
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
+        <p> Welcome {{current_user.username}}</p></br>
       </head>
       <body>
       	<div class="businesscontainer">
@@ -17,20 +18,22 @@
               </ul>
             </div>
             <div class="businessSection">
+            {% for business in businesses %}
             <form>
                  <input type="hidden" name="id" value="{{business.id}}">
                  <label>Name:</label>
-                 <input type="text" name="business_name" id="nameInput"  value="{{ }}">
+                 <input type="text" name="business_name" id="nameInput"  value="{{business.business_name }}">
                  <label>Category:</label>
-                 <input type="text" name="Category" id="categoryInput" value="{{ }}">
+                 <input type="text" name="Category" id="categoryInput" value="{{business.business_category }}">
                  <label>Location:</label>
-                 <input type="text" name="location" id="locationInput" value="{{ }}">
+                 <input type="text" name="location" id="locationInput" value="{{ business.business_location}}">
                  <input type="hidden" name="user_id" value="{{business.user_id}}">
   
                  <button class="update">Update</button>
                  <button class="update">Review</button>
                  <button class="update">Delete</button>
               </form>
+              {% endfor %}
             </div>
       	</div>
       </body>
