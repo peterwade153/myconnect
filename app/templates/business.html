@@ -18,6 +18,10 @@
               </ul>
             </div>
             <div class="businessSection">
+                  {% if error %}
+               <strong style="color:#ff0000;">Error: {{error}}</strong>
+                  {% endif %}
+                  
             {% for business in businesses %}
             <form >
                  <input type="hidden" name="id" value="{{business.id}}">

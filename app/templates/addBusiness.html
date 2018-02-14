@@ -12,7 +12,7 @@
       	    <img src="{{url_for('static',filename='business-icon.png')}}" class="user">
       	    <h2>Register Your Business</h2>
                   {% if error %}
-               <strong style="color:#fff;">Error: {{error}}</strong>
+               <strong style="color:#ff0000;">Error: {{error}}</strong>
                   {% endif %}
 
       	    <form method ="POST", action= "/addbusiness" >
