@@ -4,7 +4,7 @@
         <meta charset="utf-8">
       	<title>Weconnect</title>
         <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
-        <p> Welcome {{current_user.username}}</p></br>
+        <h4> Welcome {{current_user.username}}</h4></br>
       </head>
       <body>
       	<div class="businesscontainer">
@@ -19,7 +19,7 @@
             </div>
             <div class="businessSection">
             {% for business in businesses %}
-            <form>
+            <form >
                  <input type="hidden" name="id" value="{{business.id}}">
                  <label>Name:</label>
                  <input type="text" name="business_name" id="nameInput"  value="{{business.business_name }}">
