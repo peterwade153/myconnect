@@ -118,7 +118,8 @@ input[type=submit]:hover{
 .container a:hover{
 	background: #f4f4f4;
 }
-p{
+
+h4{
 	color: #FFF;
 	float: right;
     font-size: 20px;
