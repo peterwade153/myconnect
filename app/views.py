@@ -1,4 +1,5 @@
 """ views.py"""
+import os
 from functools import wraps
 from werkzeug.security import check_password_hash
 from flask import render_template, request, redirect, url_for, session, flash
@@ -10,7 +11,7 @@ from app.models import db, User, Business, Review
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'not_secret_any_more'
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:admin@localhost/weconnect"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL',"postgresql://postgres:admin@localhost/weconnect")
 
 db.app = app
 db.init_app(app)# connecting sqlalchemy object to the app
