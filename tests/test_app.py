@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 import unittest
 import os
+from app.models import db, user
 import tempfile
 import pytest
 from app import app
