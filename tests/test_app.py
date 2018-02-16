@@ -16,7 +16,7 @@ class AppTestCase(unittest.TestCase):
 		app.testing = True
 		self.db_fd, app.config['DATABASE'] = tempfile.mkstemp()
 		self.app = app.test_client()
-		#db.create_all()
+		db.create_all()
 
 	def tearDown(self):
 		''' will be called after every test'''
