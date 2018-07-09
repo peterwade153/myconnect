@@ -24,6 +24,7 @@ def load_user(user_id):
 	""" loads user from an id from the database"""
 	return User.query.get(int(user_id))
 
+
 login_manager.login_view = 'login'
 
 
@@ -125,22 +126,28 @@ def addbusiness():
 	return render_template('addBusiness.html', error = error)
 
 
-@app.route('/updatebusiness', methods = ['POST'])
+@app.route("/updatebusiness/<id>", methods = ['POST','GET'])
 @login_required
-def update_business():
+def update_business(id):
 	"""route enables authenticated user update a business they created """
+	error = None
+	business_id = id
 
-	business = Business.query.filter_by(id = request.form['id']).first()
-	business.business_name = request.form['business_name']
-	business.business_category = request.form['category']
-	business.business_location = request.form['location']
-	business.user_id = request.form['user_id']
+	if request.method == 'POST':
+		business = Business.query.filter_by(id = business_id ).first()
+		business.business_name = request.form['business_name']
+		business.business_category = request.form['category']
+		business.business_location = request.form['location']
+		#business.user_id = request.form['user_id']
 
-	if business.user_id == current_user.id:
-		db.session.commit()
-	error = 'you dont have permission to edit!'
+		if business.user_id == current_user.id:
+			db.session.commit()
 
-	return render_template('business.html', error = error)
+		else:
+			error = 'you dont have permission to edit!'
+			return render_template('business.html', error = error)
+
+	return render_template('updatebusiness.html', error = error)
 
 @app.route('/deletebusiness')
 @login_required
@@ -157,9 +164,17 @@ def delete_business():
 	return render_template('business.html', error = error)
 
 
-@app.route('/reviews')
+@app.route('/reviews/<business_id>')
 @login_required
 def reviews():
-	""" routes enables users view reviews about businesses"""
+	""" routs enables users view reviews about businesses"""
+	error = None
+	if request.method == ['POST']
+	review = Business.query.filter_by(id = business_id).first()
+	if not review:
+		error = "business doesnt exist!"
+		return render_template('business.html', error = error)
+	
+
 
 	return render_template('reviews.html')

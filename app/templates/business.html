@@ -23,18 +23,19 @@
                   {% endif %}
                   
             {% for business in businesses %}
-            <form >
+            <form method="" action="">
                  <input type="hidden" name="id" value="{{business.id}}">
                  <label>Name:</label>
-                 <input type="text" name="business_name" id="nameInput"  value="{{business.business_name }}">
+                 <input type="text" name="business_name" id="nameInput"  value="{{business.business_name }}" disabled="">
                  <label>Category:</label>
-                 <input type="text" name="Category" id="categoryInput" value="{{business.business_category }}">
+                 <input type="text" name="Category" id="categoryInput" value="{{business.business_category }}" disabled="">
                  <label>Location:</label>
-                 <input type="text" name="location" id="locationInput" value="{{ business.business_location}}">
+                 <input type="text" name="location" id="locationInput" value="{{ business.business_location}}" disabled="">
                  <input type="hidden" name="user_id" value="{{business.user_id}}">
   
-                 <button class="update">Update</button>
-                 <button class="update">Review</button>
+                 <button type="submit" class="update">Update</button>
+                 <a href="/updatebusiness/{{business.id}}">update</a>
+                 <a href="/deletebusiness">Logout</a>
                  <button class="update">Delete</button>
               </form>
               {% endfor %}
